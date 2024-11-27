@@ -16,6 +16,8 @@ namespace StarterAssets
 		public float MoveSpeed = 4.0f;
 		[Tooltip("Sprint speed of the character in m/s")]
 		public float SprintSpeed = 6.0f;
+		[Tooltip("Crouch speed of the character in m/s")]
+		public float CrouchSpeed = 3.0f;
 		[Tooltip("Rotation speed of the character")]
 		public float RotationSpeed = 1.0f;
 		[Tooltip("Acceleration and deceleration")]
@@ -32,6 +34,12 @@ namespace StarterAssets
 		public float JumpTimeout = 0.1f;
 		[Tooltip("Time required to pass before entering the fall state. Useful for walking down stairs")]
 		public float FallTimeout = 0.15f;
+
+		[Space(10)]
+		[Tooltip("The height ratio of crouched player related to the standard height")]
+		public float CrouchingHeightRatio = 0.5f;
+		[Tooltip("The time it takes to transition between crouching and standing up in seconds")]
+		public float CrouchingTransitionTime = 0.25f;
 
 		[Header("Player Grounded")]
 		[Tooltip("If the character is grounded or not. Not part of the CharacterController built in grounded check")]
@@ -64,6 +72,12 @@ namespace StarterAssets
 		private float _jumpTimeoutDelta;
 		private float _fallTimeoutDelta;
 
+		private bool _isCrouching;
+		private float _targetHeightRatio;
+		private float _startingHeightRatio;
+		private float _crouchDelta;
+
+		private CapsuleCollider _capsuleCollider;
 	
 #if ENABLE_INPUT_SYSTEM
 		private PlayerInput _playerInput;
@@ -86,6 +100,11 @@ namespace StarterAssets
 			}
 		}
 
+		private float CrouchingTransitionSpeed
+		{
+			get => 1 / CrouchingTransitionTime;
+		}
+
 		private void Awake()
 		{
 			// get a reference to our main camera
@@ -105,17 +124,27 @@ namespace StarterAssets
 			Debug.LogError( "Starter Assets package is missing dependencies. Please use Tools/Starter Assets/Reinstall Dependencies to fix it");
 #endif
 
+			_capsuleCollider = GetComponentInChildren<CapsuleCollider>();
+
 			// reset our timeouts on start
 			_jumpTimeoutDelta = JumpTimeout;
 			_fallTimeoutDelta = FallTimeout;
+
+			_isCrouching = false;
+			_targetHeightRatio = 1.0f;
 		}
 
 		private void Update()
 		{
 			JumpAndGravity();
 			GroundedCheck();
+			Crouching();
+
 			Move();
-		}
+
+			DrawCeilingRaycast();
+
+        }
 
 		private void LateUpdate()
 		{
@@ -244,6 +273,53 @@ namespace StarterAssets
 			{
 				_verticalVelocity += Gravity * Time.deltaTime;
 			}
+		}
+
+		private void Crouching()
+		{
+			if (_input.crouch)
+			{
+				if (Grounded)
+				{
+					_isCrouching = !_isCrouching;
+					_targetHeightRatio = _isCrouching ? CrouchingHeightRatio : 1.0f;
+					_startingHeightRatio = this.transform.localScale.y;
+					_crouchDelta = 0;
+				}
+
+				_input.crouch = false;
+
+			}
+
+            if (_targetHeightRatio != this.transform.localScale.y)
+            {
+				if (_isCrouching || (!_isCrouching && !HasCeilingOver()))
+				{
+					_crouchDelta += Time.deltaTime * CrouchingTransitionSpeed;
+					this.transform.localScale = new Vector3(
+						1,
+						Mathf.Lerp(_startingHeightRatio, _targetHeightRatio, _crouchDelta),
+						1);
+				}
+            }
+        }
+
+		private bool HasCeilingOver()
+		{
+            RaycastHit hit;
+
+            if(Physics.Raycast(transform.position, Vector3.up, out hit, _capsuleCollider.height + 0.2f))
+			{
+				return !hit.transform.gameObject.CompareTag("Player");
+			}
+
+			return false;
+
+		}
+
+		private void DrawCeilingRaycast()
+		{
+			Debug.DrawRay(transform.position, Vector3.up * (_capsuleCollider.height + 0.2f), Color.red, 2);
 		}
 
 		private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
