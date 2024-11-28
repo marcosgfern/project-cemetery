@@ -141,9 +141,6 @@ namespace StarterAssets
 			Crouching();
 
 			Move();
-
-			DrawCeilingRaycast();
-
         }
 
 		private void LateUpdate()
@@ -306,20 +303,7 @@ namespace StarterAssets
 
 		private bool HasCeilingOver()
 		{
-            RaycastHit hit;
-
-            if(Physics.Raycast(transform.position, Vector3.up, out hit, _capsuleCollider.height + 0.2f))
-			{
-				return !hit.transform.gameObject.CompareTag("Player");
-			}
-
-			return false;
-
-		}
-
-		private void DrawCeilingRaycast()
-		{
-			Debug.DrawRay(transform.position, Vector3.up * (_capsuleCollider.height + 0.2f), Color.red, 2);
+			return Physics.Raycast(transform.position, Vector3.up, _capsuleCollider.height * transform.localScale.y + 0.4f, GroundLayers);
 		}
 
 		private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
