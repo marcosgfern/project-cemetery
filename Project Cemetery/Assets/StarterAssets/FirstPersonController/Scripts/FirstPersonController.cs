@@ -16,6 +16,8 @@ namespace StarterAssets
 		public float MoveSpeed = 4.0f;
 		[Tooltip("Sprint speed of the character in m/s")]
 		public float SprintSpeed = 6.0f;
+		[Tooltip("Crouch speed of the character in m/s")]
+		public float CrouchSpeed = 3.0f;
 		[Tooltip("Rotation speed of the character")]
 		public float RotationSpeed = 1.0f;
 		[Tooltip("Acceleration and deceleration")]
@@ -32,6 +34,13 @@ namespace StarterAssets
 		public float JumpTimeout = 0.1f;
 		[Tooltip("Time required to pass before entering the fall state. Useful for walking down stairs")]
 		public float FallTimeout = 0.15f;
+
+		[Space(10)]
+		[Tooltip("The height ratio of crouched player related to the standard height")]
+		[Range(0.1f, 1.0f)]
+		public float CrouchingHeightRatio = 0.5f;
+		[Tooltip("The time it takes to transition between crouching and standing up in seconds")]
+		public float CrouchingTransitionTime = 0.25f;
 
 		[Header("Player Grounded")]
 		[Tooltip("If the character is grounded or not. Not part of the CharacterController built in grounded check")]
@@ -64,6 +73,12 @@ namespace StarterAssets
 		private float _jumpTimeoutDelta;
 		private float _fallTimeoutDelta;
 
+		private bool _isCrouching;
+		private float _targetHeightRatio;
+		private float _startingHeightRatio;
+		private float _crouchDelta;
+
+		private CapsuleCollider _capsuleCollider;
 	
 #if ENABLE_INPUT_SYSTEM
 		private PlayerInput _playerInput;
@@ -86,6 +101,24 @@ namespace StarterAssets
 			}
 		}
 
+		private float CrouchingTransitionSpeed
+		{
+			get => 1 / CrouchingTransitionTime;
+		}
+
+		private bool IsStandingUp
+		{
+			get => transform.localScale.y == 1 && !_isCrouching;
+		}
+
+		// represents ratio of crouching from 0 to 1
+		// 0 = completely standing up
+		// 1 = completely crouched
+		private float CrouchAmount
+		{
+			get => (1 - transform.localScale.y) / (1f - CrouchingHeightRatio);
+		}
+
 		private void Awake()
 		{
 			// get a reference to our main camera
@@ -105,17 +138,24 @@ namespace StarterAssets
 			Debug.LogError( "Starter Assets package is missing dependencies. Please use Tools/Starter Assets/Reinstall Dependencies to fix it");
 #endif
 
+			_capsuleCollider = GetComponentInChildren<CapsuleCollider>();
+
 			// reset our timeouts on start
 			_jumpTimeoutDelta = JumpTimeout;
 			_fallTimeoutDelta = FallTimeout;
+
+			_isCrouching = false;
+			_targetHeightRatio = 1.0f;
 		}
 
 		private void Update()
 		{
 			JumpAndGravity();
 			GroundedCheck();
+			Crouching();
+
 			Move();
-		}
+        }
 
 		private void LateUpdate()
 		{
@@ -155,6 +195,9 @@ namespace StarterAssets
 		{
 			// set target speed based on move speed, sprint speed and if sprint is pressed
 			float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
+
+			// modify target speed depending on crouching
+			targetSpeed = Mathf.Lerp(targetSpeed, CrouchSpeed, CrouchAmount);
 
 			// a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
 
@@ -214,8 +257,15 @@ namespace StarterAssets
 				// Jump
 				if (_input.jump && _jumpTimeoutDelta <= 0.0f)
 				{
-					// the square root of H * -2 * G = how much velocity needed to reach desired height
-					_verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
+					if (IsStandingUp)
+					{
+						// the square root of H * -2 * G = how much velocity needed to reach desired height
+						_verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
+					}
+					else
+					{
+						_input.jump = false;
+					}
 				}
 
 				// jump timeout
@@ -244,6 +294,39 @@ namespace StarterAssets
 			{
 				_verticalVelocity += Gravity * Time.deltaTime;
 			}
+		}
+
+		private void Crouching()
+		{
+			if (_input.crouch)
+			{
+				if (Grounded)
+				{
+					_isCrouching = !_isCrouching;
+					_targetHeightRatio = _isCrouching ? CrouchingHeightRatio : 1.0f;
+					_startingHeightRatio = this.transform.localScale.y;
+					_crouchDelta = 0;
+				}
+
+				_input.crouch = false;
+			}
+
+            if (_targetHeightRatio != this.transform.localScale.y)
+            {
+				if (_isCrouching || (!_isCrouching && !HasCeilingOver()))
+				{
+					_crouchDelta += Time.deltaTime * CrouchingTransitionSpeed;
+					this.transform.localScale = new Vector3(
+						1,
+						Mathf.Lerp(_startingHeightRatio, _targetHeightRatio, _crouchDelta),
+						1);
+				}
+            }
+        }
+
+		private bool HasCeilingOver()
+		{
+			return Physics.Raycast(transform.position, Vector3.up, _capsuleCollider.height * transform.localScale.y + 0.4f, GroundLayers);
 		}
 
 		private static float ClampAngle(float lfAngle, float lfMin, float lfMax)

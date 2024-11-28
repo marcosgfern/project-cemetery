@@ -203,7 +203,7 @@ CharacterController:
   m_StepOffset: 0.25
   m_SkinWidth: 0.02
   m_MinMoveDistance: 0
-  m_Center: {x: 0, y: 0.93, z: 0}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!114 &4900302377735497952
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -218,12 +218,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MoveSpeed: 6
   SprintSpeed: 9
+  CrouchSpeed: 3
   RotationSpeed: 2
   SpeedChangeRate: 10
   JumpHeight: 1.2
   Gravity: -15
   JumpTimeout: 0.1
   FallTimeout: 0.15
+  CrouchingHeightRatio: 0.5
+  CrouchingTransitionTime: 0.2
   Grounded: 1
   GroundedOffset: -0.14
   GroundedRadius: 0.5
@@ -266,6 +269,7 @@ MonoBehaviour:
   look: {x: 0, y: 0}
   jump: 0
   sprint: 0
+  crouch: 0
   analogMovement: 0
   cursorLocked: 1
   cursorInputForLook: 1
