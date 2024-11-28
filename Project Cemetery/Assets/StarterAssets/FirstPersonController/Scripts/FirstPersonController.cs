@@ -105,6 +105,11 @@ namespace StarterAssets
 			get => 1 / CrouchingTransitionTime;
 		}
 
+		private bool IsStandingUp
+		{
+			get => transform.localScale.y == 1 && !_isCrouching;
+		}
+
 		private void Awake()
 		{
 			// get a reference to our main camera
@@ -240,8 +245,15 @@ namespace StarterAssets
 				// Jump
 				if (_input.jump && _jumpTimeoutDelta <= 0.0f)
 				{
-					// the square root of H * -2 * G = how much velocity needed to reach desired height
-					_verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
+					if (IsStandingUp)
+					{
+						// the square root of H * -2 * G = how much velocity needed to reach desired height
+						_verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
+					}
+					else
+					{
+						_input.jump = false;
+					}
 				}
 
 				// jump timeout
@@ -285,7 +297,6 @@ namespace StarterAssets
 				}
 
 				_input.crouch = false;
-
 			}
 
             if (_targetHeightRatio != this.transform.localScale.y)
