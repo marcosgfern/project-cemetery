@@ -37,6 +37,7 @@ namespace StarterAssets
 
 		[Space(10)]
 		[Tooltip("The height ratio of crouched player related to the standard height")]
+		[Range(0.1f, 1.0f)]
 		public float CrouchingHeightRatio = 0.5f;
 		[Tooltip("The time it takes to transition between crouching and standing up in seconds")]
 		public float CrouchingTransitionTime = 0.25f;
@@ -108,6 +109,14 @@ namespace StarterAssets
 		private bool IsStandingUp
 		{
 			get => transform.localScale.y == 1 && !_isCrouching;
+		}
+
+		// represents ratio of crouching from 0 to 1
+		// 0 = completely standing up
+		// 1 = completely crouched
+		private float CrouchAmount
+		{
+			get => (1 - transform.localScale.y) / (1f - CrouchingHeightRatio);
 		}
 
 		private void Awake()
@@ -186,6 +195,9 @@ namespace StarterAssets
 		{
 			// set target speed based on move speed, sprint speed and if sprint is pressed
 			float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
+
+			// modify target speed depending on crouching
+			targetSpeed = Mathf.Lerp(targetSpeed, CrouchSpeed, CrouchAmount);
 
 			// a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
 
