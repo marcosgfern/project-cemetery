@@ -1022,13 +1022,13 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 247234657}
-  - {fileID: 917489149}
-  - {fileID: 931614792}
   - {fileID: 548809151}
   - {fileID: 1873473586}
+  - {fileID: 247234657}
+  - {fileID: 931614792}
   - {fileID: 1413132914}
   - {fileID: 1761602341}
+  - {fileID: 917489149}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &148543547
@@ -1298,7 +1298,7 @@ GameObject:
   - component: {fileID: 247234659}
   - component: {fileID: 247234658}
   m_Layer: 0
-  m_Name: Sphere
+  m_Name: Note 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2655,7 +2655,7 @@ GameObject:
   - component: {fileID: 548809153}
   - component: {fileID: 548809152}
   m_Layer: 0
-  m_Name: Sphere (3)
+  m_Name: Box Key
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4675,7 +4675,7 @@ GameObject:
   - component: {fileID: 917489151}
   - component: {fileID: 917489150}
   m_Layer: 0
-  m_Name: Sphere (1)
+  m_Name: Note 5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4783,7 +4783,7 @@ GameObject:
   - component: {fileID: 931614794}
   - component: {fileID: 931614793}
   m_Layer: 0
-  m_Name: Sphere (2)
+  m_Name: Note 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5982,7 +5982,7 @@ GameObject:
   - component: {fileID: 1319643822}
   - component: {fileID: 1319643821}
   m_Layer: 5
-  m_Name: BoxKey
+  m_Name: Box Key Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6675,7 +6675,7 @@ GameObject:
   - component: {fileID: 1413132916}
   - component: {fileID: 1413132915}
   m_Layer: 0
-  m_Name: Sphere (4)
+  m_Name: Note 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8966,7 +8966,7 @@ GameObject:
   - component: {fileID: 1761602343}
   - component: {fileID: 1761602342}
   m_Layer: 0
-  m_Name: Sphere (5)
+  m_Name: Note 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9515,7 +9515,7 @@ GameObject:
   - component: {fileID: 1832247437}
   - component: {fileID: 1832247438}
   m_Layer: 5
-  m_Name: Keys
+  m_Name: Key Icons
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10113,7 +10113,7 @@ GameObject:
   - component: {fileID: 1873473588}
   - component: {fileID: 1873473587}
   m_Layer: 0
-  m_Name: Sphere (6)
+  m_Name: Box
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10330,7 +10330,7 @@ GameObject:
   - component: {fileID: 1944902283}
   - component: {fileID: 1944902282}
   m_Layer: 5
-  m_Name: MausoleumKey
+  m_Name: Mausoleum Key Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
