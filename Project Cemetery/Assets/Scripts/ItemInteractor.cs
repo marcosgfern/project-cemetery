@@ -1,4 +1,6 @@
+using System;
 using System.ComponentModel;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
@@ -8,12 +10,16 @@ public class ItemInteractor : MonoBehaviour
     [Tooltip("Tag name for pickable objects")]
     [SerializeField] private string PickableTag;
 
+    public Action<PickableItem> OnPick;
+
+    private Pickable _currentPickableItem;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag(PickableTag))
         {
-            Debug.Log("Able to pick up item " + other.gameObject.name);
+            _currentPickableItem = other.gameObject.GetComponent<Pickable>();
+            HUDManager.Instance.ShowPickUpItemPrompt(true);
         }
     }
 
@@ -21,7 +27,8 @@ public class ItemInteractor : MonoBehaviour
     {
         if (other.gameObject.CompareTag(PickableTag))
         {
-            Debug.Log("Unable to pick up item " + other.gameObject.name);
+            _currentPickableItem = null;
+            HUDManager.Instance.ShowPickUpItemPrompt(false);
         }
     }
 }
