@@ -9,7 +9,7 @@ public enum ItemKind
 }
 
 [CreateAssetMenu(fileName = "PickableItem", menuName = "Scriptable Objects/PickableItem")]
-public class PickableItem : ScriptableObject
+public class PickableItemInfo : ScriptableObject
 {
     [SerializeField] public string Name;
 

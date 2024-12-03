@@ -86,6 +86,7 @@ namespace StarterAssets
 		private CharacterController _controller;
 		private StarterAssetsInputs _input;
 		private GameObject _mainCamera;
+		private ItemInteractor _itemInteractor;
 
 		private const float _threshold = 0.01f;
 
@@ -137,7 +138,7 @@ namespace StarterAssets
 #else
 			Debug.LogError( "Starter Assets package is missing dependencies. Please use Tools/Starter Assets/Reinstall Dependencies to fix it");
 #endif
-
+			_itemInteractor = GetComponentInChildren<ItemInteractor>();
 			_capsuleCollider = GetComponentInChildren<CapsuleCollider>();
 
 			// reset our timeouts on start
@@ -153,6 +154,8 @@ namespace StarterAssets
 			JumpAndGravity();
 			GroundedCheck();
 			Crouching();
+
+			Interacting();
 
 			Move();
         }
@@ -323,6 +326,15 @@ namespace StarterAssets
 				}
             }
         }
+
+		private void Interacting()
+		{
+			if (_input.interact)
+			{
+				_input.interact = false;
+				_itemInteractor.Interact();
+			}
+		}
 
 		private bool HasCeilingOver()
 		{

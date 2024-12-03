@@ -10,7 +10,7 @@ public class ItemInteractor : MonoBehaviour
     [Tooltip("Tag name for pickable objects")]
     [SerializeField] private string PickableTag;
 
-    public Action<PickableItem> OnPick;
+    public Action<PickableItemInfo> OnPick;
 
     private Pickable _currentPickableItem;
 
@@ -30,5 +30,20 @@ public class ItemInteractor : MonoBehaviour
             _currentPickableItem = null;
             HUDManager.Instance.ShowPickUpItemPrompt(false);
         }
+    }
+
+    public void Interact()
+    {
+        if (_currentPickableItem != null)
+        {
+            PickUpItem();
+        }
+    }
+
+    private void PickUpItem()
+    {
+        Inventory.Instance.AddItem(_currentPickableItem.ItemInfo);
+        Destroy(_currentPickableItem.gameObject);
+        HUDManager.Instance.ShowPickUpItemPrompt(false);
     }
 }
