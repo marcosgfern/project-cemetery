@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 847eb376234be30409bd3e2ce77a12fd, type: 3}
-  m_Name: Note2
+  m_Name: Note3
   m_EditorClassIdentifier: 
-  Name: Note II
+  Name: Note III
   Kind: 2
-  Text: I feel like everything I've ever done is always completely overlooked. I
-    work, work and work again just to pay rent and then work again because I have
-    nothing better to do nor any money to pay for other things.
+  Text: Today, Erin left me. It's kind of sad but I understand. I've been working
+    too much and at home I was too exhausted to do anything more than rest. I'm so
+    tired of being chained to this life. I feel like money controls me.
