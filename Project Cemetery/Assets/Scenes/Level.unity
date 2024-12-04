@@ -3739,18 +3739,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4900302377735497952, guid: 61dd8937b6e31a4439922100b733ad09, type: 3}
-      propertyPath: MoveSpeed
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4900302377735497952, guid: 61dd8937b6e31a4439922100b733ad09, type: 3}
-      propertyPath: CrouchSpeed
-      value: 1.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 4900302377735497952, guid: 61dd8937b6e31a4439922100b733ad09, type: 3}
-      propertyPath: SprintSpeed
-      value: 8
-      objectReference: {fileID: 0}
     - target: {fileID: 6274340357737055781, guid: 61dd8937b6e31a4439922100b733ad09, type: 3}
       propertyPath: m_Name
       value: Player
