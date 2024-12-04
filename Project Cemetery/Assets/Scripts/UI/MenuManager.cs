@@ -8,6 +8,7 @@ public class MenuManager : MonoBehaviour
     [Header("References")]
     [SerializeField] private NoteScreenManager noteScreenManager;
     [SerializeField] private StarterAssetsInputs starterAssetsInputs;
+    [SerializeField] private FirstPersonController firstPersonController;
 
     private void Awake()
     {
@@ -24,6 +25,7 @@ public class MenuManager : MonoBehaviour
         noteScreenManager.gameObject.SetActive(true);
         noteScreenManager.SetNoteText(text);
 
+        firstPersonController.MovementEnabled = false;
         starterAssetsInputs.cursorInputForLook = false;
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
@@ -33,6 +35,7 @@ public class MenuManager : MonoBehaviour
     {
         noteScreenManager.gameObject.SetActive(false);
 
+        firstPersonController.MovementEnabled = true;
         starterAssetsInputs.cursorInputForLook = true;
         Cursor.lockState= CursorLockMode.Locked;
         Cursor.visible = false;

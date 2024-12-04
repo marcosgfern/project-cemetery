@@ -60,6 +60,10 @@ namespace StarterAssets
 		[Tooltip("How far in degrees can you move the camera down")]
 		public float BottomClamp = -90.0f;
 
+		[Header("Manage Controls")]
+		[Tooltip("Enables or disables player movement")]
+		public bool MovementEnabled = true;
+
 		// cinemachine
 		private float _cinemachineTargetPitch;
 
@@ -241,98 +245,123 @@ namespace StarterAssets
 			}
 
 			// move the player
-			_controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+			if (MovementEnabled)
+			{
+				_controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+			}
 		}
 
 		private void JumpAndGravity()
 		{
-			if (Grounded)
+			if (MovementEnabled)
 			{
-				// reset the fall timeout timer
-				_fallTimeoutDelta = FallTimeout;
-
-				// stop our velocity dropping infinitely when grounded
-				if (_verticalVelocity < 0.0f)
+				if (Grounded)
 				{
-					_verticalVelocity = -2f;
+					// reset the fall timeout timer
+					_fallTimeoutDelta = FallTimeout;
+
+					// stop our velocity dropping infinitely when grounded
+					if (_verticalVelocity < 0.0f)
+					{
+						_verticalVelocity = -2f;
+					}
+
+					// Jump
+					if (_input.jump && _jumpTimeoutDelta <= 0.0f)
+					{
+						if (IsStandingUp)
+						{
+							// the square root of H * -2 * G = how much velocity needed to reach desired height
+							_verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
+						}
+						else
+						{
+							_input.jump = false;
+						}
+					}
+
+					// jump timeout
+					if (_jumpTimeoutDelta >= 0.0f)
+					{
+						_jumpTimeoutDelta -= Time.deltaTime;
+					}
+				}
+				else
+				{
+					// reset the jump timeout timer
+					_jumpTimeoutDelta = JumpTimeout;
+
+					// fall timeout
+					if (_fallTimeoutDelta >= 0.0f)
+					{
+						_fallTimeoutDelta -= Time.deltaTime;
+					}
+
+					// if we are not grounded, do not jump
+					_input.jump = false;
 				}
 
-				// Jump
-				if (_input.jump && _jumpTimeoutDelta <= 0.0f)
+				// apply gravity over time if under terminal (multiply by delta time twice to linearly speed up over time)
+				if (_verticalVelocity < _terminalVelocity)
 				{
-					if (IsStandingUp)
-					{
-						// the square root of H * -2 * G = how much velocity needed to reach desired height
-						_verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
-					}
-					else
-					{
-						_input.jump = false;
-					}
-				}
-
-				// jump timeout
-				if (_jumpTimeoutDelta >= 0.0f)
-				{
-					_jumpTimeoutDelta -= Time.deltaTime;
+					_verticalVelocity += Gravity * Time.deltaTime;
 				}
 			}
 			else
 			{
-				// reset the jump timeout timer
-				_jumpTimeoutDelta = JumpTimeout;
-
-				// fall timeout
-				if (_fallTimeoutDelta >= 0.0f)
-				{
-					_fallTimeoutDelta -= Time.deltaTime;
-				}
-
-				// if we are not grounded, do not jump
 				_input.jump = false;
 			}
 
-			// apply gravity over time if under terminal (multiply by delta time twice to linearly speed up over time)
-			if (_verticalVelocity < _terminalVelocity)
-			{
-				_verticalVelocity += Gravity * Time.deltaTime;
-			}
 		}
 
 		private void Crouching()
 		{
-			if (_input.crouch)
+			if (MovementEnabled)
 			{
-				if (Grounded)
+				if (_input.crouch)
 				{
-					_isCrouching = !_isCrouching;
-					_targetHeightRatio = _isCrouching ? CrouchingHeightRatio : 1.0f;
-					_startingHeightRatio = this.transform.localScale.y;
-					_crouchDelta = 0;
+					if (Grounded)
+					{
+						_isCrouching = !_isCrouching;
+						_targetHeightRatio = _isCrouching ? CrouchingHeightRatio : 1.0f;
+						_startingHeightRatio = this.transform.localScale.y;
+						_crouchDelta = 0;
+					}
+
+					_input.crouch = false;
 				}
 
+				if (_targetHeightRatio != this.transform.localScale.y)
+				{
+					if (_isCrouching || (!_isCrouching && !HasCeilingOver()))
+					{
+						_crouchDelta += Time.deltaTime * CrouchingTransitionSpeed;
+						this.transform.localScale = new Vector3(
+							1,
+							Mathf.Lerp(_startingHeightRatio, _targetHeightRatio, _crouchDelta),
+							1);
+					}
+				}
+			}
+			else
+			{
 				_input.crouch = false;
 			}
-
-            if (_targetHeightRatio != this.transform.localScale.y)
-            {
-				if (_isCrouching || (!_isCrouching && !HasCeilingOver()))
-				{
-					_crouchDelta += Time.deltaTime * CrouchingTransitionSpeed;
-					this.transform.localScale = new Vector3(
-						1,
-						Mathf.Lerp(_startingHeightRatio, _targetHeightRatio, _crouchDelta),
-						1);
-				}
-            }
         }
 
 		private void Interacting()
 		{
-			if (_input.interact)
+			if (MovementEnabled)
+			{
+				if (_input.interact)
+				{
+					_input.interact = false;
+					_itemInteractor.Interact();
+				}
+			}
+			else
 			{
 				_input.interact = false;
-				_itemInteractor.Interact();
 			}
 		}
 

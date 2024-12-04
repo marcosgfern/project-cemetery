@@ -139,6 +139,10 @@ PrefabInstance:
       propertyPath: starterAssetsInputs
       value: 
       objectReference: {fileID: 1472503318}
+    - target: {fileID: 2834651867668861169, guid: e0f61492707367a4bb8e52085b0e8ea7, type: 3}
+      propertyPath: firstPersonController
+      value: 
+      objectReference: {fileID: 7706728689983298003}
     - target: {fileID: 3148257275469096103, guid: e0f61492707367a4bb8e52085b0e8ea7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
@@ -808,6 +812,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 61dd8937b6e31a4439922100b733ad09, type: 3}
+--- !u!114 &7706728689983298003 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4900302377735497952, guid: 61dd8937b6e31a4439922100b733ad09, type: 3}
+  m_PrefabInstance: {fileID: 7706728689983298002}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55919ac34a26952479f3fc91f777b2fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
