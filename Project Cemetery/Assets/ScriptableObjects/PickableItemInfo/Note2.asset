@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 847eb376234be30409bd3e2ce77a12fd, type: 3}
+  m_Name: Note2
+  m_EditorClassIdentifier: 
+  Name: Note II
+  Kind: 2
+  Text: Praesent ut cursus ipsum. Suspendisse potenti. Phasellus non blandit leo.
+    Duis nisi lacus, varius id tortor at, condimentum faucibus lorem. Morbi nec odio
+    imperdiet, malesuada magna a, dictum lectus. Nam accumsan turpis ac urna sodales
+    posuere. Praesent quis libero ut leo mollis convallis sed eget ante. Sed sed
+    lectus orci. Nulla quis mi sit amet ipsum facilisis consectetur a vitae lacus.
+    Suspendisse potenti. Quisque efficitur nisl lectus, ut placerat metus hendrerit
+    nec. Cras vel tempus purus, eget laoreet neque. Vestibulum sit amet lorem risus.
+    Sed dictum elit ut libero eleifend, vel luctus ex vestibulum. Etiam mollis orci
+    quis feugiat egestas. Nam nec metus tincidunt, dignissim magna eget, facilisis
+    massa.
