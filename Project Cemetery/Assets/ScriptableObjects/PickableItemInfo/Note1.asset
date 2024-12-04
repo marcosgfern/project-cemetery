@@ -14,13 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Note I
   Kind: 2
-  Text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vestibulum
-    purus in suscipit viverra. Morbi elit diam, cursus at blandit ac, varius tincidunt
-    lorem. Cras nec turpis ut nisi auctor laoreet. Nam ac volutpat turpis. Duis gravida
-    dapibus orci. Praesent sed malesuada leo. Suspendisse sit amet dolor ac mi semper
-    maximus. Mauris sit amet laoreet justo. Vivamus id aliquet ante. Pellentesque
-    egestas augue non interdum cursus. Mauris consequat metus et vehicula molestie.
-    Fusce euismod commodo tortor at placerat. Fusce sed faucibus enim. Ut ac elit
-    rhoncus, semper ex eu, maximus est. Nunc bibendum at tortor eget rhoncus. Proin
-    tincidunt, est sit amet maximus efficitur, risus magna venenatis arcu, et elementum
-    diam nisl condimentum arcu.
+  Text: Heiress of the Holdfam family found dead near her place of residence. Police
+    are still looking for a suspect and told us they are "hopeful" they are getting
+    closer to the murderer. (...) Only daughter of Henry Holdfam, Emily died without
+    any children and decided to be buried with her state (...) The funeral is to
+    be held next friday and the place of burial will stay private, out of respect
+    to the family.
