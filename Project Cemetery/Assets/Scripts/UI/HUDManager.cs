@@ -39,9 +39,4 @@ public class HUDManager : MonoBehaviour
     {
         PickUpItemPrompt?.SetActive(show);
     }
-
-    public void ShowNote(string text)
-    {
-        Debug.Log(text);
-    }
 }

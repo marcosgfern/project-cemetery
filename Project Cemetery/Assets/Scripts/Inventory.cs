@@ -27,7 +27,7 @@ public class Inventory : MonoBehaviour
                 HUDManager.Instance.ShowBoxKey(true);
                 break;
             case ItemKind.Note:
-                HUDManager.Instance.ShowNote(item.Text);
+                MenuManager.Instance.ShowNote(item.Text);
                 break;
         }
         
